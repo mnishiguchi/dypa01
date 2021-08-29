@@ -6,7 +6,7 @@ defmodule DYPA01 do
   use GenServer
   require Logger
 
-  @type options() :: [GenServer.option() | {:port_name, String.t()}]
+  @type options() :: [{:port_name, String.t()}]
 
   @doc """
   Start a new GenServer for interacting with a DYPA01 sensor.
@@ -17,11 +17,19 @@ defmodule DYPA01 do
 
   """
   @spec start_link(options()) :: GenServer.on_start()
-  def start_link(init_arg \\ []) do
-    gen_server_opts =
-      Keyword.take(init_arg, [:name, :debug, :timeout, :spawn_opt, :hibernate_after])
+  def start_link(opts \\ []) do
+    port_name = Keyword.fetch!(opts, :port_name)
 
-    GenServer.start_link(__MODULE__, init_arg, gen_server_opts)
+    case DYPA01.PortRegistry.whereis_name(port_name) do
+      :undefined ->
+        Logger.info("[DYPA01] Starting on port #{inspect(port_name)}")
+        gen_server_opts = [name: DYPA01.PortRegistry.via(port_name)]
+        GenServer.start_link(__MODULE__, opts, gen_server_opts)
+
+      pid ->
+        Logger.info("[DYPA01] Already started on port #{inspect(port_name)}")
+        {:ok, pid}
+    end
   end
 
   @doc """
@@ -36,24 +44,13 @@ defmodule DYPA01 do
   def init(opts) do
     port_name = Keyword.fetch!(opts, :port_name)
 
-    :ok = Logger.info("[DYPA01] Starting on port #{inspect(port_name)}")
-
     transport =
       case DYPA01.Transport.start_link(port_name: port_name) do
-        {:ok, transport} ->
-          transport
-
-        {:error, :eagain} ->
-          DYPA01.Transport.find_pid(port_name)
-
-        {:error, :enoent} ->
-          raise("Port not found")
-
-        {:error, :eacces} ->
-          raise("Permission denied when opening port")
-
-        {:error, other_reason} ->
-          raise("Could not open port due to #{inspect(other_reason)}")
+        {:ok, transport} -> transport
+        {:error, :eagain} -> raise("Port already exists")
+        {:error, :enoent} -> raise("Port not found")
+        {:error, :eacces} -> raise("Permission denied when opening port")
+        {:error, other_reason} -> raise("Could not open port due to #{inspect(other_reason)}")
       end
 
     state = %{transport: transport, last_measurement: nil}
