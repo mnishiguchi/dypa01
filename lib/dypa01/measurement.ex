@@ -12,7 +12,7 @@ defmodule DYPA01.Measurement do
         }
 
   @spec from_sensor_signal(<<_::32>>) :: t()
-  def from_sensor_signal(sensor_signal) do
+  def from_sensor_signal(<<_::32>> = sensor_signal) do
     __struct__(
       distance_mm: DYPA01.Calc.distance_from_sensor_signal(sensor_signal),
       timestamp_ms: System.monotonic_time(:millisecond)
