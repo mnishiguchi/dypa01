@@ -6,7 +6,7 @@ defmodule DYPA01.Measurement do
   defstruct [:distance_mm, :timestamp_ms]
 
   @type t :: %{
-          required(:timestamp_ms) => non_neg_integer(),
+          required(:timestamp_ms) => integer,
           required(:distance_mm) => number,
           optional(:__struct__) => atom
         }
