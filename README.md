@@ -1,4 +1,4 @@
-# DYPA01
+# DYP-A01
 
 [![Hex version](https://img.shields.io/hexpm/v/dypa01.svg 'Hex version')](https://hex.pm/packages/dypa01)
 [![API docs](https://img.shields.io/hexpm/v/dypa01.svg?label=docs 'API docs')](https://hexdocs.pm/dypa01)

@@ -1,14 +1,14 @@
 defmodule DYPA01.MixProject do
   use Mix.Project
 
-  @version "0.0.1"
+  @version "0.1.0"
   @source_url "https://github.com/mnishiguchi/dypa01"
 
   def project do
     [
       app: :dypa01,
       version: @version,
-      description: "Use DYPA-01 ultrasonic distance sensor in Elixir",
+      description: "Use DYP-A01 ultrasonic distance sensor in Elixir",
       elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
