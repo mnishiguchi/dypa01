@@ -8,7 +8,8 @@ defmodule DYPA01.Transport.UART do
     data_bits: 8,
     stop_bits: 1,
     parity: :none,
-    active: true
+    active: true,
+    framing: Circuits.UART.Framing.FourByte
   ]
 
   @impl DYPA01.Transport
