@@ -45,7 +45,7 @@ defmodule DYPA01 do
     port_name = Keyword.fetch!(opts, :port_name)
 
     transport =
-      case DYPA01.Transport.start_link(port_name: port_name) do
+      case transport_mod().start_link(port_name: port_name) do
         {:ok, transport} -> transport
         {:error, :eagain} -> raise("Port already exists")
         {:error, :enoent} -> raise("Port not found")
@@ -72,5 +72,9 @@ defmodule DYPA01 do
   def handle_info({:circuits_uart, _pid, sensor_signal}, state) do
     measurement = DYPA01.Measurement.from_sensor_signal(sensor_signal)
     {:noreply, %{state | last_measurement: measurement}}
+  end
+
+  defp transport_mod() do
+    Application.get_env(:dypa01, :transport_mod, DYPA01.Transport.UART)
   end
 end
