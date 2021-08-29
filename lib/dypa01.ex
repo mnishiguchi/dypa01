@@ -17,7 +17,7 @@ defmodule DYPA01 do
 
   """
   @spec start_link(options()) :: GenServer.on_start()
-  def start_link(opts \\ []) do
+  def start_link(opts) do
     port_name = Keyword.fetch!(opts, :port_name)
 
     case DYPA01.PortRegistry.whereis_name(port_name) do
