@@ -20,12 +20,4 @@ defmodule DYPA01.Transport do
       {:ok, transport}
     end
   end
-
-  @spec find_pid(binary) :: pid | nil
-  def find_pid(port_name) do
-    case Circuits.UART.find_pids() do
-      [{pid, ^port_name}] -> pid
-      _ -> nil
-    end
-  end
 end
