@@ -24,7 +24,7 @@ iex> Circuits.UART.enumerate
   }
 }
 
-# Start a gen server for interacting with a DYPA01 sensor
+# Start a gen server for interacting with a DYP-A01 sensor on port ttyAMA0
 iex> {:ok, pid} = DYPA01.start_link(port_name: "ttyAMA0")
 {:ok, #PID<0.1407.0>}
 
