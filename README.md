@@ -10,9 +10,19 @@ Use [DYP-A01](https://www.adafruit.com/product/4664) ultrasonic distance sensor 
 ## Usage
 
 ```elixir
-# Discover serial ports in use
+# List available serial ports
 iex> Circuits.UART.enumerate
-%{"ttyAMA0" => %{}}
+%{
+  "ttyAMA0" => %{},
+  "ttyS0" => %{},
+  "ttyUSB0" => %{
+    description: "CP2102 USB to UART Bridge Controller",
+    manufacturer: "Silicon Labs",
+    product_id: 60000,
+    serial_number: "0001",
+    vendor_id: 4292
+  }
+}
 
 # Start a gen server for interacting with a DYPA01 sensor
 iex> {:ok, pid} = DYPA01.start_link(port_name: "ttyAMA0")
