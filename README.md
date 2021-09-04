@@ -32,3 +32,15 @@ iex> {:ok, pid} = DYPA01.start_link(port_name: "ttyAMA0")
 iex> DYPA01.measure(pid)
 {:ok, %DYPA01.Measurement{distance_mm: 1680, timestamp_ms: 321793}}
 ```
+
+## Wiring
+
+This library assumes the "UART auto output" mode, which is enabled when the sensor's "RX" cable is unused.
+For example, when connecting the sensor to Raspberry Pi's GPIO pins, use only the following three pins.
+
+| Cable number | Cable name | Raspberry Pi |
+| ------------ | ---------- | ------------ |
+| 1            | VCC        | GPIO 4 (5V)  |
+| 2            | GND        | GPIO 6 (GND) |
+| 3            | RX         |              |
+| 4            | TX         | GPIO 8 (RX)  |
